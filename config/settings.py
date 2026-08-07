@@ -173,7 +173,7 @@ STATIC_ROOT = env_path("STATIC_ROOT", "staticfiles")
 #     ]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = '/srv/mysite/media/'
+MEDIA_ROOT = env_path("MEDIA_ROOT", "media")
 
 LOGIN_URL = "board:signin"
 LOGIN_REDIRECT_URL = "board:post_list"
