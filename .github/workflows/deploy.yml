@@ -51,8 +51,8 @@ jobs:
         env:
           MARIADB_DATABASE: testdb
           MARIADB_USER: tester
-          MARIADB_PASSWORD: test-password
-          MARIADB_ROOT_PASSWORD: root-test-password
+          MARIADB_PASSWORD: 1234
+          MARIADB_ROOT_PASSWORD: tjdl2004227
 
         ports:
           - 3306:3306
