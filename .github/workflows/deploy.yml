@@ -25,7 +25,7 @@ env:
   GUNICORN_SERVICE: gunicorn
 
   # EFS
-  EFS_MOUNT_POINT: /srv/efs/mysite/media
+  EFS_MOUNT_POINT: /srv/mysite/media
 
   # collectstatic 결과 업로드 위치
   S3_STATIC_URI: s3://mysite-cdn-bucket/static
