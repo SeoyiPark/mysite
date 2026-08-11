@@ -397,11 +397,29 @@ jobs:
             exit 1
           fi
 
-          echo "[EFS-2] /etc/fstab EFS 설정 확인"
+          echo "[EFS-2] /etc/fstab EFS 설정 확인 및 정상화"
 
           if ! grep -Fq "\$EFS_MOUNT_POINT" /etc/fstab; then
             echo "/etc/fstab에 EFS 마운트 설정이 없습니다: \$EFS_MOUNT_POINT"
             exit 1
+          fi
+
+          if ! grep -F "\$EFS_MOUNT_POINT" /etc/fstab | grep -q "x-systemd.automount"; then
+            echo "fstab의 EFS 줄이 없거나 깨져 있어 정상화합니다."
+
+            cp /etc/fstab /etc/fstab.bak.\$(date +%Y%m%d%H%M%S)
+
+            # 기존에 있던 (깨졌을 수 있는) EFS 관련 줄을 전부 제거
+            grep -Fv "\$EFS_MOUNT_POINT" /etc/fstab > /etc/fstab.new
+            mv /etc/fstab.new /etc/fstab
+
+            # 올바른 형식의 EFS 마운트 줄을 새로 추가
+            echo "fs-0c91a3c49d3914c62.efs.ap-northeast-2.amazonaws.com:/ \$EFS_MOUNT_POINT nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev,x-systemd.automount,x-systemd.requires=network-online.target 0 0" >> /etc/fstab
+
+            systemctl daemon-reload
+
+            echo "fstab 정상화 완료:"
+            grep -F "\$EFS_MOUNT_POINT" /etc/fstab
           fi
 
           echo "[EFS-3] systemd automount 구성 다시 읽기"
