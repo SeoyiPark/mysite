@@ -1104,7 +1104,7 @@ jobs:
               MaxHealthyPercentage: 200,
               InstanceWarmup: 10,
               SkipMatching: true,
-              AutoRollback: true
+              AutoRollback: false
             }')
 
           DESIRED_CONFIGURATION=$(jq -n \
